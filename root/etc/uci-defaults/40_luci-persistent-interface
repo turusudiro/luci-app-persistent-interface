@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ ."$(uci -q get persistent-interface.global)" != ."settings" ]; then
+	touch /etc/config/persistent-interface
+	uci -q batch <<-EOF >/dev/null
+		add persistent-interface settings
+		rename persistent-interface.@settings[-1]="global"
+		set persistent-interface.global.enabled='0'
+		set persistent-interface.global.script='1'
+		set persistent-interface.global.logging='1'
+		commit persistent-interface
+	EOF
+fi
+
+exit 0

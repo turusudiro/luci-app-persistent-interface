@@ -1,0 +1,11 @@
+{
+  "admin/services/luci-app-persistent-interface": {
+    "title": "Persistent Interface",
+    "order": 100,
+    "action": {
+      "type": "view",
+      "path": "persistent-interface"
+    }
+  }
+}
+

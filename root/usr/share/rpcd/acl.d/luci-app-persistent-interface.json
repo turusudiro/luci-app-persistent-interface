@@ -1,0 +1,19 @@
+{
+  "luci-app-persistent-interface": {
+    "description": "Allow persistent-interface to execute shell and access files",
+    "read": {
+      "file": {
+        "/bin/mkdir": ["exec"],
+        "/etc/persistent-interface": ["list"],
+        "/etc/persistent-interface/*": ["read", "exec"]
+      },
+	  "uci": [ "persistent-interface" ]
+    },
+    "write": {
+      "file": {
+        "/etc/persistent-interface/*": ["write"]
+      },
+	  "uci": [ "persistent-interface" ]
+    }
+  }
+}

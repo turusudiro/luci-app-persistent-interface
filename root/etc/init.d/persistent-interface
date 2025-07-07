@@ -1,0 +1,23 @@
+#!/bin/sh /etc/rc.common
+# Init script to rename interfaces using UCI config (for static/early devices)
+
+START=19
+
+start() {
+        # Ensure required files/tools exist
+        [ ! -r /lib/functions/persistent-interface.sh ] && exit 0
+        [ ! -x "$(command -v ip)" ] && exit 0
+        [ ! -r /etc/config/persistent-interface ] && exit 0
+
+        . /lib/functions/persistent-interface.sh
+
+        # Loop over real interfaces
+        for i in /sys/class/net/*; do
+                _devname=$(basename "$i")
+
+                case "$_devname" in
+                        lo|br*) ;;  # skip loopback and bridges
+                        *) _ifrename "$_devname" ;;
+                esac
+        done
+}

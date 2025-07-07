@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# we need these things, otherwise it's pointless running
+[ ! -r /lib/functions/persistent-interface.sh -o ! -x /sbin/ip -o ! -r /etc/config/persistent-interface ] && exit 0
+
+# 🛑 check if service is enabled
+ENABLED=$(uci -q get persistent-interface.global.enabled)
+[ "$ENABLED" != "1" ] && exit 0
+
+. /lib/functions/persistent-interface.sh
+
+# check for 'add' event
+[ "$ACTION" = "add" -a "$HOTPLUG_TYPE" = "net" -a ! -z "$DEVICENAME" ] && {
+	_ifrename $DEVICENAME
+}
